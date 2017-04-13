@@ -17,13 +17,13 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@WebServlet("/android")
-public class AndroidScopedAndroidCodeServlet extends HttpServlet {
+@WebServlet("/browser")
+public class CrossConversationScopedBrowserTestServlet extends HttpServlet {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AndroidScopedAndroidCodeServlet.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CrossConversationScopedBrowserTestServlet.class);
 
     @Inject
-    private AndroidScopedObject androidScopedObject;
+    private CrossConversationScopedObject androidScopedObject;
 
     @Inject
     private CrossConversationManager androidManager;
@@ -32,6 +32,6 @@ public class AndroidScopedAndroidCodeServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         LOGGER.debug("doGet");
         this.androidScopedObject.method();
-        response.getWriter().print(this.androidManager.getAndroidCode());
+        response.getWriter().print(this.androidManager.getCode());
     }
 }

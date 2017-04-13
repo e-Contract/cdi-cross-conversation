@@ -12,13 +12,13 @@ import org.slf4j.LoggerFactory;
 import be.e_contract.cdi.crossconversation.CrossConversationScoped;
 
 @CrossConversationScoped
-public class AndroidScopedObject {
+public class CrossConversationScopedObject {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AndroidScopedObject.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CrossConversationScopedObject.class);
 
     private final String value;
     
-    public AndroidScopedObject() {
+    public CrossConversationScopedObject() {
         LOGGER.debug("constructor");
         this.value = UUID.randomUUID().toString();
     }

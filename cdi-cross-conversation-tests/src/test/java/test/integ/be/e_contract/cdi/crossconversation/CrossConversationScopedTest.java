@@ -36,9 +36,9 @@ import be.e_contract.cdi.crossconversation.CrossConversationScoped;
 
 @RunWith(Arquillian.class)
 @RunAsClient
-public class AndroidScopedTest {
+public class CrossConversationScopedTest {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AndroidScopedTest.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CrossConversationScopedTest.class);
 
     @ArquillianResource
     private URL baseURL;
@@ -47,14 +47,13 @@ public class AndroidScopedTest {
     public static WebArchive createTestArchive() {
         WebArchive war = ShrinkWrap
                 .create(WebArchive.class, "test.war")
-                .addClasses(AndroidScopedBrowserTestServlet.class, AndroidScopedObject.class, AndroidScopedValueServlet.class,
-                        AndroidScopedInvalidateSessionServlet.class, AndroidScopedAndroidCodeServlet.class)
+                .addClasses(CrossConversationScopedBrowserTestServlet.class, CrossConversationScopedObject.class, CrossConversationScopedValueServlet.class,
+                        CrossConversationScopedInvalidateSessionServlet.class, CrossConversationScopedAndroidCodeServlet.class)
                 .addPackages(true, CrossConversationScoped.class.getPackage())
-                .addAsWebInfResource(
-                        AndroidScopedTest.class
+                .addAsWebInfResource(CrossConversationScopedTest.class
                                 .getResource("/META-INF/beans.xml"),
                         "beans.xml")
-                .addAsManifestResource(AndroidScopedTest.class.getResource("/META-INF/services/javax.enterprise.inject.spi.Extension"),
+                .addAsManifestResource(CrossConversationScopedTest.class.getResource("/META-INF/services/javax.enterprise.inject.spi.Extension"),
                         "services/javax.enterprise.inject.spi.Extension");
         return war;
     }

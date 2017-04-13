@@ -17,9 +17,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @WebServlet("/invalidate")
-public class AndroidScopedInvalidateSessionServlet extends HttpServlet {
+public class CrossConversationScopedInvalidateSessionServlet extends HttpServlet {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AndroidScopedInvalidateSessionServlet.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CrossConversationScopedInvalidateSessionServlet.class);
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

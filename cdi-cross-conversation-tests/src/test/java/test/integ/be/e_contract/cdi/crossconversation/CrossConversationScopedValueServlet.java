@@ -6,7 +6,6 @@
  */
 package test.integ.be.e_contract.cdi.crossconversation;
 
-import be.e_contract.cdi.crossconversation.CrossConversationManager;
 import java.io.IOException;
 import javax.inject.Inject;
 import javax.servlet.ServletException;
@@ -17,21 +16,17 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@WebServlet("/browser")
-public class AndroidScopedBrowserTestServlet extends HttpServlet {
+@WebServlet("/value")
+public class CrossConversationScopedValueServlet extends HttpServlet {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AndroidScopedBrowserTestServlet.class);
-
-    @Inject
-    private AndroidScopedObject androidScopedObject;
+    private static final Logger LOGGER = LoggerFactory.getLogger(CrossConversationScopedValueServlet.class);
 
     @Inject
-    private CrossConversationManager androidManager;
+    private CrossConversationScopedObject androidScopedObject;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         LOGGER.debug("doGet");
-        this.androidScopedObject.method();
-        response.getWriter().print(this.androidManager.getCode());
+        response.getWriter().print(this.androidScopedObject.getValue());
     }
 }
