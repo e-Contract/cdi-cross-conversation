@@ -32,6 +32,6 @@ public class CrossConversationScopedBrowserTestServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         LOGGER.debug("doGet");
         this.androidScopedObject.method();
-        response.getWriter().print(this.androidManager.getCode());
+        response.getWriter().print(this.androidManager.getCrossConversationIdentifier());
     }
 }

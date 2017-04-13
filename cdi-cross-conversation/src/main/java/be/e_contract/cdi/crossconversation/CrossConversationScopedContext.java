@@ -25,8 +25,8 @@ public class CrossConversationScopedContext implements Context, Serializable {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CrossConversationScopedContext.class);
 
-    // key: android code -> key bean class name -> instance entry -> instance
-    static final Map<String, Map<String, InstanceEntry>> androidStore = new ConcurrentHashMap<>();
+    // key: cross conversation identifier -> key bean class name -> instance entry -> instance
+    static final Map<String, Map<String, InstanceEntry>> CROSS_CONVERSATIONS = new ConcurrentHashMap<>();
 
     public static class InstanceEntry {
 
@@ -71,14 +71,14 @@ public class CrossConversationScopedContext implements Context, Serializable {
         if (null == androidCodeParameter) {
             // webbrowser
             HttpSession httpSession = httpServletRequest.getSession();
-            String androidCode = (String) getWebBrowserCode(httpSession);
+            String androidCode = (String) getCrossConversationIdentifier(httpSession);
             if (null == androidCode) {
                 androidCode = UUID.randomUUID().toString();
                 httpSession.setAttribute(CrossConversationScopedContext.class.getName() + ".webBrowserCode", androidCode);
                 LOGGER.debug("new android code: {}", androidCode);
-                androidStore.put(androidCode, new ConcurrentHashMap<String, InstanceEntry>());
+                CROSS_CONVERSATIONS.put(androidCode, new ConcurrentHashMap<String, InstanceEntry>());
             }
-            Map<String, InstanceEntry> androidInstances = androidStore.get(androidCode);
+            Map<String, InstanceEntry> androidInstances = CROSS_CONVERSATIONS.get(androidCode);
             String beanName = bean.getBeanClass().getName();
             LOGGER.debug("bean name: {}", beanName);
             InstanceEntry instanceEntry = (InstanceEntry) androidInstances.get(beanName);
@@ -99,7 +99,7 @@ public class CrossConversationScopedContext implements Context, Serializable {
             HttpSession httpSession = httpServletRequest.getSession();
             httpSession.setAttribute(CrossConversationScopedContext.class.getName() + ".androidCode", androidCodeParameter);
 
-            Map<String, InstanceEntry> androidInstances = androidStore.get(androidCodeParameter);
+            Map<String, InstanceEntry> androidInstances = CROSS_CONVERSATIONS.get(androidCodeParameter);
             if (null == androidInstances) {
                 // non-existing android code
                 throw new ContextNotActiveException();
@@ -119,7 +119,7 @@ public class CrossConversationScopedContext implements Context, Serializable {
         }
     }
 
-    public static String getWebBrowserCode(HttpSession httpSession) {
+    public static String getCrossConversationIdentifier(HttpSession httpSession) {
         String androidCode = (String) httpSession.getAttribute(CrossConversationScopedContext.class.getName() + ".webBrowserCode");
         return androidCode;
     }

@@ -29,16 +29,17 @@ public class CrossConversationScopedHttpSessionListener implements HttpSessionLi
     public void sessionDestroyed(HttpSessionEvent se) {
         HttpSession httpSession = se.getSession();
         LOGGER.debug("session destroyed: {}", httpSession.getId());
-        // we terminate the web browser android scope
-        String androidCode = CrossConversationScopedContext.getWebBrowserCode(httpSession);
-        if (null == androidCode) {
+        // we terminate the web browser cross conversation scope
+        String crossConversationIdentifier = CrossConversationScopedContext.getCrossConversationIdentifier(httpSession);
+        if (null == crossConversationIdentifier) {
             return;
         }
-        Map<String, CrossConversationScopedContext.InstanceEntry> instanceEntryMap = CrossConversationScopedContext.androidStore.remove(androidCode);
+        Map<String, CrossConversationScopedContext.InstanceEntry> instanceEntryMap
+                = CrossConversationScopedContext.CROSS_CONVERSATIONS.remove(crossConversationIdentifier);
         if (null == instanceEntryMap) {
             return;
         }
-        LOGGER.debug("destroying android scope: {}", androidCode);
+        LOGGER.debug("destroying cross conversation scope: {}", crossConversationIdentifier);
         Collection<CrossConversationScopedContext.InstanceEntry> instanceEntries = instanceEntryMap.values();
         for (CrossConversationScopedContext.InstanceEntry instanceEntry : instanceEntries) {
             instanceEntry.destroy();

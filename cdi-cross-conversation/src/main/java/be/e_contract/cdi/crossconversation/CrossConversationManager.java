@@ -15,11 +15,12 @@ import javax.servlet.http.HttpSession;
 public class CrossConversationManager {
 
     /**
-     * Retrieves the Android scope code at the web browser side.
+     * Retrieves the cross conversation scope identifier at the web browser
+     * side.
      *
      * @return
      */
-    public String getCode() {
+    public String getCrossConversationIdentifier() {
         HttpServletRequest httpServletRequest = CrossConversationScopedFilter.getHttpServletRequest();
         if (null == httpServletRequest) {
             throw new ContextNotActiveException();
@@ -28,7 +29,7 @@ public class CrossConversationManager {
         if (null == httpSession) {
             throw new ContextNotActiveException();
         }
-        String androidCode = CrossConversationScopedContext.getWebBrowserCode(httpSession);
+        String androidCode = CrossConversationScopedContext.getCrossConversationIdentifier(httpSession);
         return androidCode;
     }
 
