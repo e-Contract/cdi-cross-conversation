@@ -29,6 +29,7 @@ import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.spi.Bean;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import org.apache.deltaspike.core.api.provider.BeanProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -77,7 +78,8 @@ public class CrossConversationScopedContext implements Context, Serializable {
         if (null == httpServletRequest) {
             throw new ContextNotActiveException();
         }
-        String androidCodeParameter = httpServletRequest.getParameter("androidCode");
+        CrossConversationStrategy crossConversationStrategy = BeanProvider.getContextualReference(CrossConversationStrategy.class);
+        String androidCodeParameter = crossConversationStrategy.getCrossConversationIdentifier(httpServletRequest);
         Bean bean = (Bean) contextual;
         if (null == androidCodeParameter) {
             // webbrowser
@@ -85,7 +87,7 @@ public class CrossConversationScopedContext implements Context, Serializable {
             String androidCode = (String) getCrossConversationIdentifier(httpSession);
             if (null == androidCode) {
                 androidCode = UUID.randomUUID().toString();
-                httpSession.setAttribute(CrossConversationScopedContext.class.getName() + ".webBrowserCode", androidCode);
+                httpSession.setAttribute(CrossConversationScopedContext.class.getName() + ".crossConversationIdentifier", androidCode);
                 LOGGER.debug("new android code: {}", androidCode);
                 CROSS_CONVERSATIONS.put(androidCode, new ConcurrentHashMap<String, InstanceEntry>());
             }
@@ -131,7 +133,7 @@ public class CrossConversationScopedContext implements Context, Serializable {
     }
 
     public static String getCrossConversationIdentifier(HttpSession httpSession) {
-        String androidCode = (String) httpSession.getAttribute(CrossConversationScopedContext.class.getName() + ".webBrowserCode");
+        String androidCode = (String) httpSession.getAttribute(CrossConversationScopedContext.class.getName() + ".crossConversationIdentifier");
         return androidCode;
     }
 

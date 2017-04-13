@@ -44,6 +44,8 @@ import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import be.e_contract.cdi.crossconversation.CrossConversationScoped;
+import org.jboss.shrinkwrap.api.spec.JavaArchive;
+import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 
 @RunWith(Arquillian.class)
 @RunAsClient
@@ -59,10 +61,12 @@ public class CrossConversationScopedTest {
         WebArchive war = ShrinkWrap
                 .create(WebArchive.class, "test.war")
                 .addClasses(CrossConversationScopedBrowserTestServlet.class, CrossConversationScopedObject.class, CrossConversationScopedValueServlet.class,
-                        CrossConversationScopedInvalidateSessionServlet.class, CrossConversationScopedAndroidCodeServlet.class)
+                        CrossConversationScopedInvalidateSessionServlet.class, CrossConversationScopedAndroidCodeServlet.class,
+                        TestCrossConversationStrategy.class)
                 .addPackages(true, CrossConversationScoped.class.getPackage())
-                .addAsWebInfResource(CrossConversationScopedTest.class
-                        .getResource("/META-INF/beans.xml"),
+                .addAsLibraries(Maven.resolver().resolve("org.apache.deltaspike.core:deltaspike-core-impl:1.7.2").withTransitivity()
+                        .as(JavaArchive.class))
+                .addAsWebInfResource(CrossConversationScopedTest.class.getResource("/META-INF/beans.xml"),
                         "beans.xml")
                 .addAsManifestResource(CrossConversationScopedTest.class.getResource("/META-INF/services/javax.enterprise.inject.spi.Extension"),
                         "services/javax.enterprise.inject.spi.Extension");
