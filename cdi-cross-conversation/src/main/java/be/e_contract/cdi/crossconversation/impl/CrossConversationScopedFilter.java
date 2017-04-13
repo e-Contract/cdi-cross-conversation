@@ -43,7 +43,6 @@ public class CrossConversationScopedFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        LOGGER.debug("doFilter");
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         HTTP_SERVLET_REQUESTS.set(httpServletRequest);
         try {

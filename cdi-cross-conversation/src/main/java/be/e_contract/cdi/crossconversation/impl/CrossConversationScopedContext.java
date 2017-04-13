@@ -93,50 +93,55 @@ public class CrossConversationScopedContext implements Context, Serializable {
                 LOGGER.debug("new cross conversation: {}", crossConversationIdentifier);
                 CROSS_CONVERSATIONS.put(crossConversationIdentifier, new ConcurrentHashMap<String, InstanceEntry>());
             }
-            Map<String, InstanceEntry> androidInstances = CROSS_CONVERSATIONS.get(crossConversationIdentifier);
+            Map<String, InstanceEntry> crossConversationInstances = CROSS_CONVERSATIONS.get(crossConversationIdentifier);
             String beanName = bean.getBeanClass().getName();
             LOGGER.debug("bean name: {}", beanName);
-            InstanceEntry instanceEntry = (InstanceEntry) androidInstances.get(beanName);
+            InstanceEntry instanceEntry = (InstanceEntry) crossConversationInstances.get(beanName);
             if (null == instanceEntry) {
                 if (null == creationalContext) {
                     return null;
                 }
                 Object instance = contextual.create(creationalContext);
                 instanceEntry = new InstanceEntry(instance, contextual, creationalContext);
-                androidInstances.put(beanName, instanceEntry);
+                crossConversationInstances.put(beanName, instanceEntry);
             }
             return (T) instanceEntry.getInstance();
         } else {
-            // android
+            // linked client
             LOGGER.debug("linked cross conversation identifier: {}", linkedCrossConversationIdentifier);
 
             // update in session for testing purposes for the moment
             HttpSession httpSession = httpServletRequest.getSession();
             httpSession.setAttribute(CrossConversationScopedContext.class.getName() + ".linkedCrossConversationIdentifier", linkedCrossConversationIdentifier);
 
-            Map<String, InstanceEntry> androidInstances = CROSS_CONVERSATIONS.get(linkedCrossConversationIdentifier);
-            if (null == androidInstances) {
-                // non-existing android code
+            Map<String, InstanceEntry> crossConversationInstances = CROSS_CONVERSATIONS.get(linkedCrossConversationIdentifier);
+            if (null == crossConversationInstances) {
+                // non-existing linked cross conversation identifier
                 throw new ContextNotActiveException();
             }
             String beanName = bean.getBeanClass().getName();
             LOGGER.debug("bean name: {}", beanName);
-            InstanceEntry instanceEntry = (InstanceEntry) androidInstances.get(beanName);
+            InstanceEntry instanceEntry = (InstanceEntry) crossConversationInstances.get(beanName);
             if (null == instanceEntry) {
                 if (null == creationalContext) {
                     return null;
                 }
                 Object instance = contextual.create(creationalContext);
                 instanceEntry = new InstanceEntry(instance, contextual, creationalContext);
-                androidInstances.put(beanName, instanceEntry);
+                crossConversationInstances.put(beanName, instanceEntry);
             }
             return (T) instanceEntry.getInstance();
         }
     }
 
     public static String getCrossConversationIdentifier(HttpSession httpSession) {
-        String androidCode = (String) httpSession.getAttribute(CrossConversationScopedContext.class.getName() + ".crossConversationIdentifier");
-        return androidCode;
+        String crossConversdationIdentifier = (String) httpSession.getAttribute(CrossConversationScopedContext.class.getName() + ".crossConversationIdentifier");
+        return crossConversdationIdentifier;
+    }
+
+    public static String getLinkedCrossConversationIdentifier(HttpSession httpSession) {
+        String linkedCrossConversationIdentifier = (String) httpSession.getAttribute(CrossConversationScopedContext.class.getName() + ".linkedCrossConversationIdentifier");
+        return linkedCrossConversationIdentifier;
     }
 
     @Override

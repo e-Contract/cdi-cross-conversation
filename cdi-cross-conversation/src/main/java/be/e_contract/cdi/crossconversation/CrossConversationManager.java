@@ -61,7 +61,7 @@ public class CrossConversationManager {
         if (null == httpSession) {
             throw new ContextNotActiveException();
         }
-        String androidCode = (String) httpSession.getAttribute(CrossConversationScopedContext.class.getName() + ".linkedCrossConversationIdentifier");
-        return androidCode;
+        String linkedCrossConversationIdentifier = CrossConversationScopedContext.getLinkedCrossConversationIdentifier(httpSession);
+        return linkedCrossConversationIdentifier;
     }
 }
