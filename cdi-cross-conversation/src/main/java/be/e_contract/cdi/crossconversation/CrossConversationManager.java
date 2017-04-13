@@ -47,12 +47,12 @@ public class CrossConversationManager {
     }
 
     /**
-     * Retrieves the Android scope code at the android side. This is mainly for
+     * Retrieves the linked cross conversation identifier. This is mainly for
      * testing purposes.
      *
      * @return
      */
-    public String getAndroidCode() {
+    public String getLinkedCrossConversationIdentifier() {
         HttpServletRequest httpServletRequest = CrossConversationScopedFilter.getHttpServletRequest();
         if (null == httpServletRequest) {
             throw new ContextNotActiveException();
@@ -61,7 +61,7 @@ public class CrossConversationManager {
         if (null == httpSession) {
             throw new ContextNotActiveException();
         }
-        String androidCode = (String) httpSession.getAttribute(CrossConversationScopedContext.class.getName() + ".androidCode");
+        String androidCode = (String) httpSession.getAttribute(CrossConversationScopedContext.class.getName() + ".linkedCrossConversationIdentifier");
         return androidCode;
     }
 }

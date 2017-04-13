@@ -43,6 +43,6 @@ public class CrossConversationScopedAndroidCodeServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         LOGGER.debug("doGet");
         this.androidScopedObject.method();
-        response.getWriter().print(this.androidManager.getAndroidCode());
+        response.getWriter().print(this.androidManager.getLinkedCrossConversationIdentifier());
     }
 }

@@ -81,19 +81,19 @@ public class CrossConversationScopedContext implements Context, Serializable {
             throw new ContextNotActiveException();
         }
         CrossConversationStrategy crossConversationStrategy = BeanProvider.getContextualReference(CrossConversationStrategy.class);
-        String androidCodeParameter = crossConversationStrategy.getCrossConversationIdentifier(httpServletRequest);
+        String linkedCrossConversationIdentifier = crossConversationStrategy.getLinkedCrossConversationIdentifier(httpServletRequest);
         Bean bean = (Bean) contextual;
-        if (null == androidCodeParameter) {
+        if (null == linkedCrossConversationIdentifier) {
             // webbrowser
             HttpSession httpSession = httpServletRequest.getSession();
-            String androidCode = (String) getCrossConversationIdentifier(httpSession);
-            if (null == androidCode) {
-                androidCode = UUID.randomUUID().toString();
-                httpSession.setAttribute(CrossConversationScopedContext.class.getName() + ".crossConversationIdentifier", androidCode);
-                LOGGER.debug("new android code: {}", androidCode);
-                CROSS_CONVERSATIONS.put(androidCode, new ConcurrentHashMap<String, InstanceEntry>());
+            String crossConversationIdentifier = (String) getCrossConversationIdentifier(httpSession);
+            if (null == crossConversationIdentifier) {
+                crossConversationIdentifier = UUID.randomUUID().toString();
+                httpSession.setAttribute(CrossConversationScopedContext.class.getName() + ".crossConversationIdentifier", crossConversationIdentifier);
+                LOGGER.debug("new cross conversation: {}", crossConversationIdentifier);
+                CROSS_CONVERSATIONS.put(crossConversationIdentifier, new ConcurrentHashMap<String, InstanceEntry>());
             }
-            Map<String, InstanceEntry> androidInstances = CROSS_CONVERSATIONS.get(androidCode);
+            Map<String, InstanceEntry> androidInstances = CROSS_CONVERSATIONS.get(crossConversationIdentifier);
             String beanName = bean.getBeanClass().getName();
             LOGGER.debug("bean name: {}", beanName);
             InstanceEntry instanceEntry = (InstanceEntry) androidInstances.get(beanName);
@@ -108,13 +108,13 @@ public class CrossConversationScopedContext implements Context, Serializable {
             return (T) instanceEntry.getInstance();
         } else {
             // android
-            LOGGER.debug("android code: {}", androidCodeParameter);
+            LOGGER.debug("linked cross conversation identifier: {}", linkedCrossConversationIdentifier);
 
             // update in session for testing purposes for the moment
             HttpSession httpSession = httpServletRequest.getSession();
-            httpSession.setAttribute(CrossConversationScopedContext.class.getName() + ".androidCode", androidCodeParameter);
+            httpSession.setAttribute(CrossConversationScopedContext.class.getName() + ".linkedCrossConversationIdentifier", linkedCrossConversationIdentifier);
 
-            Map<String, InstanceEntry> androidInstances = CROSS_CONVERSATIONS.get(androidCodeParameter);
+            Map<String, InstanceEntry> androidInstances = CROSS_CONVERSATIONS.get(linkedCrossConversationIdentifier);
             if (null == androidInstances) {
                 // non-existing android code
                 throw new ContextNotActiveException();

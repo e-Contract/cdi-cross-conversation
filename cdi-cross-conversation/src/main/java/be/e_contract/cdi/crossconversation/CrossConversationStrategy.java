@@ -32,5 +32,5 @@ public interface CrossConversationStrategy {
      * @param httpServletRequest
      * @return
      */
-    String getCrossConversationIdentifier(HttpServletRequest httpServletRequest);
+    String getLinkedCrossConversationIdentifier(HttpServletRequest httpServletRequest);
 }

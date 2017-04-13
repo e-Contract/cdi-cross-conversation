@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 public class TestCrossConversationStrategy implements CrossConversationStrategy {
 
     @Override
-    public String getCrossConversationIdentifier(HttpServletRequest httpServletRequest) {
+    public String getLinkedCrossConversationIdentifier(HttpServletRequest httpServletRequest) {
         String crossConversationIdentifier = httpServletRequest.getParameter("androidCode");
         return crossConversationIdentifier;
     }
