@@ -13,12 +13,12 @@ import javax.enterprise.inject.spi.Extension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class AndroidScopedExtension implements Extension, Serializable {
+public class CrossConversationScopedExtension implements Extension, Serializable {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AndroidScopedExtension.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CrossConversationScopedExtension.class);
 
     public void registerContext(@Observes AfterBeanDiscovery event) {
-        LOGGER.debug("adding AndroidScoped context");
-        event.addContext(new AndroidScopedContext());
+        LOGGER.debug("adding CrossConversationScoped context");
+        event.addContext(new CrossConversationScopedContext());
     }
 }

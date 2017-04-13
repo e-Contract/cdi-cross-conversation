@@ -6,12 +6,12 @@
  */
 package test.integ.be.e_contract.cdi.crossconversation;
 
-import be.e_contract.cdi.crossconversation.AndroidScoped;
 import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import be.e_contract.cdi.crossconversation.CrossConversationScoped;
 
-@AndroidScoped
+@CrossConversationScoped
 public class AndroidScopedObject {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AndroidScopedObject.class);

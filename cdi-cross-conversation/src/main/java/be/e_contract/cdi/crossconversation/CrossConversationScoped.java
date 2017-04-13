@@ -17,6 +17,6 @@ import javax.inject.Scope;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE, ElementType.METHOD, ElementType.FIELD})
 @NormalScope(passivating = false)
-public @interface AndroidScoped {
+public @interface CrossConversationScoped {
 
 }

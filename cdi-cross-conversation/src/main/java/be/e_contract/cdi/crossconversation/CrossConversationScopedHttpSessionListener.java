@@ -16,9 +16,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @WebListener
-public class AndroidScopedHttpSessionListener implements HttpSessionListener {
+public class CrossConversationScopedHttpSessionListener implements HttpSessionListener {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AndroidScopedHttpSessionListener.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CrossConversationScopedHttpSessionListener.class);
 
     @Override
     public void sessionCreated(HttpSessionEvent se) {
@@ -30,17 +30,17 @@ public class AndroidScopedHttpSessionListener implements HttpSessionListener {
         HttpSession httpSession = se.getSession();
         LOGGER.debug("session destroyed: {}", httpSession.getId());
         // we terminate the web browser android scope
-        String androidCode = AndroidScopedContext.getWebBrowserCode(httpSession);
+        String androidCode = CrossConversationScopedContext.getWebBrowserCode(httpSession);
         if (null == androidCode) {
             return;
         }
-        Map<String, AndroidScopedContext.InstanceEntry> instanceEntryMap = AndroidScopedContext.androidStore.remove(androidCode);
+        Map<String, CrossConversationScopedContext.InstanceEntry> instanceEntryMap = CrossConversationScopedContext.androidStore.remove(androidCode);
         if (null == instanceEntryMap) {
             return;
         }
         LOGGER.debug("destroying android scope: {}", androidCode);
-        Collection<AndroidScopedContext.InstanceEntry> instanceEntries = instanceEntryMap.values();
-        for (AndroidScopedContext.InstanceEntry instanceEntry : instanceEntries) {
+        Collection<CrossConversationScopedContext.InstanceEntry> instanceEntries = instanceEntryMap.values();
+        for (CrossConversationScopedContext.InstanceEntry instanceEntry : instanceEntries) {
             instanceEntry.destroy();
         }
     }

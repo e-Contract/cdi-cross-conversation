@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @ApplicationScoped
-public class AndroidManager {
+public class CrossConversationManager {
 
     /**
      * Retrieves the Android scope code at the web browser side.
@@ -20,7 +20,7 @@ public class AndroidManager {
      * @return
      */
     public String getCode() {
-        HttpServletRequest httpServletRequest = AndroidScopedFilter.getHttpServletRequest();
+        HttpServletRequest httpServletRequest = CrossConversationScopedFilter.getHttpServletRequest();
         if (null == httpServletRequest) {
             throw new ContextNotActiveException();
         }
@@ -28,7 +28,7 @@ public class AndroidManager {
         if (null == httpSession) {
             throw new ContextNotActiveException();
         }
-        String androidCode = AndroidScopedContext.getWebBrowserCode(httpSession);
+        String androidCode = CrossConversationScopedContext.getWebBrowserCode(httpSession);
         return androidCode;
     }
 
@@ -39,7 +39,7 @@ public class AndroidManager {
      * @return
      */
     public String getAndroidCode() {
-        HttpServletRequest httpServletRequest = AndroidScopedFilter.getHttpServletRequest();
+        HttpServletRequest httpServletRequest = CrossConversationScopedFilter.getHttpServletRequest();
         if (null == httpServletRequest) {
             throw new ContextNotActiveException();
         }
@@ -47,7 +47,7 @@ public class AndroidManager {
         if (null == httpSession) {
             throw new ContextNotActiveException();
         }
-        String androidCode = (String) httpSession.getAttribute(AndroidScopedContext.class.getName() + ".androidCode");
+        String androidCode = (String) httpSession.getAttribute(CrossConversationScopedContext.class.getName() + ".androidCode");
         return androidCode;
     }
 }

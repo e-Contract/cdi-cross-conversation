@@ -6,7 +6,7 @@
  */
 package test.integ.be.e_contract.cdi.crossconversation;
 
-import be.e_contract.cdi.crossconversation.AndroidManager;
+import be.e_contract.cdi.crossconversation.CrossConversationManager;
 import java.io.IOException;
 import javax.inject.Inject;
 import javax.servlet.ServletException;
@@ -26,7 +26,7 @@ public class AndroidScopedBrowserTestServlet extends HttpServlet {
     private AndroidScopedObject androidScopedObject;
 
     @Inject
-    private AndroidManager androidManager;
+    private CrossConversationManager androidManager;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

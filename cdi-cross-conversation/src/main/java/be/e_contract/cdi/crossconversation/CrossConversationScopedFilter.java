@@ -19,9 +19,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @WebFilter("/*")
-public class AndroidScopedFilter implements Filter {
+public class CrossConversationScopedFilter implements Filter {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AndroidScopedFilter.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CrossConversationScopedFilter.class);
 
     private static final ThreadLocal<HttpServletRequest> HTTP_SERVLET_REQUESTS = new ThreadLocal<>();
 

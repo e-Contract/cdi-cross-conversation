@@ -21,9 +21,9 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class AndroidScopedContext implements Context, Serializable {
+public class CrossConversationScopedContext implements Context, Serializable {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AndroidScopedContext.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CrossConversationScopedContext.class);
 
     // key: android code -> key bean class name -> instance entry -> instance
     static final Map<String, Map<String, InstanceEntry>> androidStore = new ConcurrentHashMap<>();
@@ -49,20 +49,20 @@ public class AndroidScopedContext implements Context, Serializable {
         }
     }
 
-    public AndroidScopedContext() {
+    public CrossConversationScopedContext() {
         LOGGER.debug("constructor");
     }
 
     @Override
     public Class<? extends Annotation> getScope() {
         LOGGER.debug("getScope");
-        return AndroidScoped.class;
+        return CrossConversationScoped.class;
     }
 
     @Override
     public <T> T get(Contextual<T> contextual, CreationalContext<T> creationalContext) {
         LOGGER.debug("get with creational context");
-        HttpServletRequest httpServletRequest = AndroidScopedFilter.getHttpServletRequest();
+        HttpServletRequest httpServletRequest = CrossConversationScopedFilter.getHttpServletRequest();
         if (null == httpServletRequest) {
             throw new ContextNotActiveException();
         }
@@ -74,7 +74,7 @@ public class AndroidScopedContext implements Context, Serializable {
             String androidCode = (String) getWebBrowserCode(httpSession);
             if (null == androidCode) {
                 androidCode = UUID.randomUUID().toString();
-                httpSession.setAttribute(AndroidScopedContext.class.getName() + ".webBrowserCode", androidCode);
+                httpSession.setAttribute(CrossConversationScopedContext.class.getName() + ".webBrowserCode", androidCode);
                 LOGGER.debug("new android code: {}", androidCode);
                 androidStore.put(androidCode, new ConcurrentHashMap<String, InstanceEntry>());
             }
@@ -97,7 +97,7 @@ public class AndroidScopedContext implements Context, Serializable {
 
             // update in session for testing purposes for the moment
             HttpSession httpSession = httpServletRequest.getSession();
-            httpSession.setAttribute(AndroidScopedContext.class.getName() + ".androidCode", androidCodeParameter);
+            httpSession.setAttribute(CrossConversationScopedContext.class.getName() + ".androidCode", androidCodeParameter);
 
             Map<String, InstanceEntry> androidInstances = androidStore.get(androidCodeParameter);
             if (null == androidInstances) {
@@ -120,7 +120,7 @@ public class AndroidScopedContext implements Context, Serializable {
     }
 
     public static String getWebBrowserCode(HttpSession httpSession) {
-        String androidCode = (String) httpSession.getAttribute(AndroidScopedContext.class.getName() + ".webBrowserCode");
+        String androidCode = (String) httpSession.getAttribute(CrossConversationScopedContext.class.getName() + ".webBrowserCode");
         return androidCode;
     }
 
@@ -133,7 +133,7 @@ public class AndroidScopedContext implements Context, Serializable {
     @Override
     public boolean isActive() {
         LOGGER.debug("isActive");
-        HttpServletRequest httpServletRequest = AndroidScopedFilter.getHttpServletRequest();
+        HttpServletRequest httpServletRequest = CrossConversationScopedFilter.getHttpServletRequest();
         return httpServletRequest != null;
     }
 }

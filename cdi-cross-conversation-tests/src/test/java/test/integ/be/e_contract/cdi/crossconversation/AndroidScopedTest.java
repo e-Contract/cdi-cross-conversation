@@ -6,7 +6,6 @@
  */
 package test.integ.be.e_contract.cdi.crossconversation;
 
-import be.e_contract.cdi.crossconversation.AndroidScoped;
 import java.io.IOException;
 import java.net.URL;
 import javax.servlet.http.HttpServletResponse;
@@ -33,6 +32,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import be.e_contract.cdi.crossconversation.CrossConversationScoped;
 
 @RunWith(Arquillian.class)
 @RunAsClient
@@ -49,7 +49,7 @@ public class AndroidScopedTest {
                 .create(WebArchive.class, "test.war")
                 .addClasses(AndroidScopedBrowserTestServlet.class, AndroidScopedObject.class, AndroidScopedValueServlet.class,
                         AndroidScopedInvalidateSessionServlet.class, AndroidScopedAndroidCodeServlet.class)
-                .addPackages(true, AndroidScoped.class.getPackage())
+                .addPackages(true, CrossConversationScoped.class.getPackage())
                 .addAsWebInfResource(
                         AndroidScopedTest.class
                                 .getResource("/META-INF/beans.xml"),
