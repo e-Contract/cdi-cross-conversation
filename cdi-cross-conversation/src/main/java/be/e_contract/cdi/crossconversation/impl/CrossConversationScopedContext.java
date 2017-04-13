@@ -15,8 +15,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License
  */
-package be.e_contract.cdi.crossconversation;
+package be.e_contract.cdi.crossconversation.impl;
 
+import be.e_contract.cdi.crossconversation.CrossConversationScoped;
+import be.e_contract.cdi.crossconversation.CrossConversationStrategy;
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
 import java.util.Map;

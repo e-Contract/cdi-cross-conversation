@@ -17,6 +17,8 @@
  */
 package be.e_contract.cdi.crossconversation;
 
+import be.e_contract.cdi.crossconversation.impl.CrossConversationScopedContext;
+import be.e_contract.cdi.crossconversation.impl.CrossConversationScopedFilter;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.ContextNotActiveException;
 import javax.servlet.http.HttpServletRequest;
