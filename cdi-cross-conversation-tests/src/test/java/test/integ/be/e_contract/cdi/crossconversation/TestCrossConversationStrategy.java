@@ -18,8 +18,10 @@
 package test.integ.be.e_contract.cdi.crossconversation;
 
 import be.e_contract.cdi.crossconversation.CrossConversationStrategy;
+import javax.enterprise.context.ApplicationScoped;
 import javax.servlet.http.HttpServletRequest;
 
+@ApplicationScoped
 public class TestCrossConversationStrategy implements CrossConversationStrategy {
 
     @Override
