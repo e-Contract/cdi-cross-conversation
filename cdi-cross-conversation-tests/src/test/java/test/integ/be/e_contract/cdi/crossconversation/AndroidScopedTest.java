@@ -52,7 +52,7 @@ public class AndroidScopedTest {
                 .addPackages(true, AndroidScoped.class.getPackage())
                 .addAsWebInfResource(
                         AndroidScopedTest.class
-                                .getResource("/test-beans.xml"),
+                                .getResource("/META-INF/beans.xml"),
                         "beans.xml")
                 .addAsManifestResource(AndroidScopedTest.class.getResource("/META-INF/services/javax.enterprise.inject.spi.Extension"),
                         "services/javax.enterprise.inject.spi.Extension");
